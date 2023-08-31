@@ -6,7 +6,7 @@ services:
     # Imagem base do container
     image: node:16-alpine
     # Nome do container para facilitar execução
-    container_name: project_automobiles_shop
+    container_name: node
     # Mesmo que `docker run -t`
     tty: true
     # Mesmo que `docker run -i`
@@ -25,7 +25,8 @@ services:
     # Lista de serviços do qual este serviço depende
     depends_on:
       # Precisa do banco funcionando antes de subir o node
-      - db
+      db:
+        condition: service_healthy
     # Lista de portas mapeadas de dentro para fora do container
     # na notação porta_de_fora:porta_de_dentro
     ports:
@@ -39,7 +40,7 @@ services:
 
   # Serviço que irá rodar o banco de dados
   db:
-    container_name: project_automobiles_shop_db
+    container_name: db
     image: mysql:8.0.21
     restart: always
     # Lista de portas mapeadas de dentro para fora do container
@@ -50,6 +51,11 @@ services:
       - 33060:33060
     environment:
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: project_automobiles_shop
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 # Lista de redes que os containeres irão utilizar
 networks:

@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+import './database';
 import App from './app';
 
 const PORT = 3000;
