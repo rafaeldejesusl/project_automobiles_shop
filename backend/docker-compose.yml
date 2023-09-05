@@ -12,7 +12,8 @@ services:
     # Mesmo que `docker run -i`
     stdin_open: true
     # Substitui o comando padrão da imagem do node
-    command: ["npm", "start"]
+    command: >
+      sh -c "npm run migration:up && npm start"
     # Restarta a imagem caso algo a faça parar
     restart: always
     # Diretório padrão de execução
