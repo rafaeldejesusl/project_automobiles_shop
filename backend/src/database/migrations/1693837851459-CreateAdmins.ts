@@ -20,7 +20,8 @@ export class CreateAdmins1693837851459 implements MigrationInterface {
                     {
                         name: 'email',
                         type: 'varchar',
-                        isNullable: false
+                        isNullable: false,
+                        isUnique: true
                     },
                     {
                         name: 'password',
