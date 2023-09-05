@@ -1,4 +1,6 @@
-{
+import { DataSource } from 'typeorm';
+
+export const connectionSource = new DataSource({
   "type": "mysql",
   "host": "db",
   "port": 3306,
@@ -8,11 +10,6 @@
   "synchronize": true,
   "logging": true,
   "entities": ["src/entities/**/*.ts"],
-  "migrations": ["src/migrations/**/*.ts"],
+  "migrations": ["src/database/migrations/**/*.ts"],
   "subscribers": ["src/subscribers/**/*.ts"],
-  "cli": {
-    "entitiesDir": "src/entities",
-    "migrationsDir": "src/migrations",
-    "subscribersDir": "src/subscribers"
-  }
-}
+});
