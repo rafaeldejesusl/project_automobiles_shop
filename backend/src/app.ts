@@ -1,4 +1,5 @@
 import express from 'express';
+import adminRouter from './routes/admin.routes';
 
 class App {
   public app: express.Express;
@@ -18,6 +19,8 @@ class App {
       this.app.get('/', (req, res) => {
         res.send('Olá, mundo!');
       });
+
+      this.app.use(adminRouter);
 
       next();
     };
