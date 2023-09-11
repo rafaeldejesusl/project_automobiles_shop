@@ -39,4 +39,14 @@ describe('Entity Admin', () => {
     expect(response.status).to.be.equal(400)
     expect(response.body.message).to.be.equal('Invalid email or password');
   });
+
+  it('Método POST /login com email incorreto', async () => {
+    (repositoryAdmin.find as sinon.SinonStub).restore();
+    sinon.stub(repositoryAdmin, 'find').resolves([]);
+    
+    const response = await chai.request(app).post('/login')
+      .send({ email: 'test', password: adminMock.password });
+    expect(response.status).to.be.equal(400)
+    expect(response.body.message).to.be.equal('Invalid email or password');
+  });
 });
