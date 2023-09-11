@@ -31,5 +31,12 @@ describe('Entity Admin', () => {
       .send({ email: adminMock.email, password: adminMock.password });
     expect(response.status).to.be.equal(200);
     expect(response.body).to.be.equal('token');
-  })
+  });
+
+  it('Método POST /login com senha incorreta', async () => {
+    const response = await chai.request(app).post('/login')
+      .send({ email: adminMock.email, password: 'test' });
+    expect(response.status).to.be.equal(400)
+    expect(response.body.message).to.be.equal('Invalid email or password');
+  });
 });
