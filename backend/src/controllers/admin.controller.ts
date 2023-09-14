@@ -19,7 +19,7 @@ export default class AdminController {
 
       return res.status(200).json(token);
     } catch (error) {
-      return res.status(500).json(error);
+      return res.status(500).json({ message: 'Internal server error' });
     }
   }
 }
