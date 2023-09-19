@@ -57,4 +57,16 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid password');
   });
+
+  it('Método POST /client com primeiro nome inválido', async () => {
+    const response = await chai.request(app).post('/client').send({
+      email: clientMock.email,
+      password: clientMock.password,
+      first_name: 'q',
+      last_name: clientMock.last_name,
+      cpf: clientMock.cpf
+    });
+    expect(response.status).to.be.equal(400);
+    expect(response.body.message).to.be.equal('Invalid first name');
+  });
 });
