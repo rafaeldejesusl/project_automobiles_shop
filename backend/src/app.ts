@@ -1,5 +1,6 @@
 import express from 'express';
 import adminRouter from './routes/admin.routes';
+import userRouter from './routes/user.routes';
 
 class App {
   public app: express.Express;
@@ -21,6 +22,8 @@ class App {
       });
 
       this.app.use(adminRouter);
+
+      this.app.use(userRouter);
 
       next();
     };
