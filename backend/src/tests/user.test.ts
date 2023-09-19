@@ -57,6 +57,17 @@ describe('Entity User', () => {
     expect(response.body.message).to.be.equal('Invalid email');
   });
 
+  it('Método POST /client sem senha', async () => {
+    const response = await chai.request(app).post('/client').send({
+      email: clientMock.email,
+      first_name: clientMock.first_name,
+      last_name: clientMock.last_name,
+      cpf: clientMock.cpf
+    });
+    expect(response.status).to.be.equal(400);
+    expect(response.body.message).to.be.equal('Invalid password');
+  });
+
   it('Método POST /client com senha inválida', async () => {
     const response = await chai.request(app).post('/client').send({
       email: clientMock.email,
