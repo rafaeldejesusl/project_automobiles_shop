@@ -103,6 +103,17 @@ describe('Entity User', () => {
     expect(response.body.message).to.be.equal('Invalid first name');
   });
 
+  it('Método POST /client sem último nome', async () => {
+    const response = await chai.request(app).post('/client').send({
+      email: clientMock.email,
+      password: clientMock.password,
+      first_name: clientMock.first_name,
+      cpf: clientMock.cpf
+    });
+    expect(response.status).to.be.equal(400);
+    expect(response.body.message).to.be.equal('Invalid last name');
+  });
+
   it('Método POST /client com último nome inválido', async () => {
     const response = await chai.request(app).post('/client').send({
       email: clientMock.email,
