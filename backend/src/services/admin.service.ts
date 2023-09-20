@@ -12,18 +12,16 @@ export default class AdminService implements IAdminService {
 
   async login(admin: IAdminRequest): Promise<Admin | null> {
     const { email, password } = admin;
-    const storedAdmin = await this.repositoryAdmin.find({ where: { email } });
+    const storedAdmin = await this.repositoryAdmin.findOne({ where: { email } });
 
-    if (storedAdmin.length === 0) {
+    if (!storedAdmin) {
       return null;
     }
 
-    const myAdmin = storedAdmin[0]
-
-    if (myAdmin.password !== password) {
+    if (storedAdmin.password !== password) {
       return null;
     }
 
-    return myAdmin;
+    return storedAdmin;
   }
 }

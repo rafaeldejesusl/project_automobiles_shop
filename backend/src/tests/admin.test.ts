@@ -15,14 +15,14 @@ const repositoryAdmin = connectionSource.getRepository(Admin);
 
 describe('Entity Admin', () => {
   before(() => {
-    sinon.stub(repositoryAdmin, 'find').resolves([adminMock]);
+    sinon.stub(repositoryAdmin, 'findOne').resolves(adminMock);
     sinon.stub(jwt, 'sign').callsFake((_payload, _secret) => {
       return 'token';
     });
   });
 
   after(() => {
-    (repositoryAdmin.find as sinon.SinonStub).restore();
+    (repositoryAdmin.findOne as sinon.SinonStub).restore();
     (jwt.sign as sinon.SinonStub).restore();
   });
 
@@ -41,8 +41,8 @@ describe('Entity Admin', () => {
   });
 
   it('Método POST /login com email incorreto', async () => {
-    (repositoryAdmin.find as sinon.SinonStub).restore();
-    sinon.stub(repositoryAdmin, 'find').resolves([]);
+    (repositoryAdmin.findOne as sinon.SinonStub).restore();
+    sinon.stub(repositoryAdmin, 'findOne').resolves(null);
     
     const response = await chai.request(app).post('/login')
       .send({ email: 'test', password: adminMock.password });
