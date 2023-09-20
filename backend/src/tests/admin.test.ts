@@ -7,15 +7,18 @@ import { app } from "../app";
 import { adminMock } from "./support/mock";
 import connectionSource from "../database";
 import { Admin } from "../entities/Admin";
+import { User } from "../entities/User";
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 const repositoryAdmin = connectionSource.getRepository(Admin);
+const repositoryUser = connectionSource.getRepository(User);
 
 describe('Entity Admin', () => {
   before(() => {
     sinon.stub(repositoryAdmin, 'findOne').resolves(adminMock);
+    sinon.stub(repositoryUser, 'findOne').resolves(null);
     sinon.stub(jwt, 'sign').callsFake((_payload, _secret) => {
       return 'token';
     });
@@ -23,6 +26,7 @@ describe('Entity Admin', () => {
 
   after(() => {
     (repositoryAdmin.findOne as sinon.SinonStub).restore();
+    (repositoryUser.findOne as sinon.SinonStub).restore();
     (jwt.sign as sinon.SinonStub).restore();
   });
 
