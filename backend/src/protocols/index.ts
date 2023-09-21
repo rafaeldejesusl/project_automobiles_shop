@@ -21,3 +21,8 @@ export interface IUserRequest {
 export interface IUserService {
   createClient(client: IUserRequest): Promise<User>
 }
+
+export interface IJwtPayload {
+  email: string,
+  type: string
+}

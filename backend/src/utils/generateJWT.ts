@@ -1,8 +1,8 @@
 import "dotenv/config";
 import * as jwt from "jsonwebtoken";
-import { IAdminRequest } from "../protocols";
+import { IJwtPayload } from "../protocols";
 
-function generateJWT(payload: IAdminRequest) {
+function generateJWT(payload: IJwtPayload) {
   const secret = process.env.JWT_SECRET || "suaSenhaSecreta";
 
   const jwtConfig: object = {
@@ -10,7 +10,7 @@ function generateJWT(payload: IAdminRequest) {
     algorithm: "HS256",
   };
 
-  const token = jwt.sign({ payload }, secret, jwtConfig);
+  const token = jwt.sign(payload, secret, jwtConfig);
 
   return token;
 }
