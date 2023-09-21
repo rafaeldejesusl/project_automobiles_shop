@@ -85,4 +85,14 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400)
     expect(response.body.message).to.be.equal('Invalid email or password');
   });
+
+  it('Método POST /login de cliente com email incorreto', async () => {
+    (repositoryUser.findOne as sinon.SinonStub).restore();
+    sinon.stub(repositoryUser, 'findOne').resolves(null);
+    
+    const response = await chai.request(app).post('/login')
+      .send({ email: 'test', password: clientMock.password });
+    expect(response.status).to.be.equal(400)
+    expect(response.body.message).to.be.equal('Invalid email or password');
+  });
 });
