@@ -79,4 +79,10 @@ describe('Entity User', () => {
     expect(response.body).to.be.equal('token');
   });
 
+  it('Método POST /login de cliente com senha incorreta', async () => {
+    const response = await chai.request(app).post('/login')
+      .send({ email: clientMock.email, password: 'test' });
+    expect(response.status).to.be.equal(400)
+    expect(response.body.message).to.be.equal('Invalid email or password');
+  });
 });
