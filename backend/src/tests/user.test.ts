@@ -266,4 +266,15 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid last name');
   });
+
+  it('Método POST /seller sem cpf', async () => {
+    const response = await chai.request(app).post('/seller').set('authorization', 'token').send({
+      email: sellerMock.email,
+      password: sellerMock.password,
+      first_name: sellerMock.first_name,
+      last_name: sellerMock.last_name
+    });
+    expect(response.status).to.be.equal(400);
+    expect(response.body.message).to.be.equal('Invalid cpf');
+  });
 });
