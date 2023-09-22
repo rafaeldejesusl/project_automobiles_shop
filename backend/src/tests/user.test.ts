@@ -197,4 +197,15 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid email');
   });
+
+  it('Método POST /seller sem senha', async () => {
+    const response = await chai.request(app).post('/seller').set('authorization', 'token').send({
+      email: sellerMock.email,
+      first_name: sellerMock.first_name,
+      last_name: sellerMock.last_name,
+      cpf: sellerMock.cpf
+    });
+    expect(response.status).to.be.equal(400);
+    expect(response.body.message).to.be.equal('Invalid password');
+  });
 });
