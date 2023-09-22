@@ -243,4 +243,15 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid first name');
   });
+
+  it('Método POST /seller sem último nome', async () => {
+    const response = await chai.request(app).post('/seller').set('authorization', 'token').send({
+      email: sellerMock.email,
+      password: sellerMock.password,
+      first_name: sellerMock.first_name,
+      cpf: sellerMock.cpf
+    });
+    expect(response.status).to.be.equal(400);
+    expect(response.body.message).to.be.equal('Invalid last name');
+  });
 });
