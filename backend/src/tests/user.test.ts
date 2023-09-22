@@ -277,4 +277,16 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid cpf');
   });
+
+  it('Método POST /seller com cpf inválido', async () => {
+    const response = await chai.request(app).post('/seller').set('authorization', 'token').send({
+      email: sellerMock.email,
+      password: sellerMock.password,
+      first_name: sellerMock.first_name,
+      last_name: sellerMock.last_name,
+      cpf: '000'
+    });
+    expect(response.status).to.be.equal(400);
+    expect(response.body.message).to.be.equal('Invalid cpf');
+  });
 });
