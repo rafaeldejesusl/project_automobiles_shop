@@ -1,9 +1,10 @@
 import chai from "chai";
 import sinon from "sinon";
 import chaiHttp from "chai-http";
+import jwt from "jsonwebtoken";
 
 import { app } from "../app";
-import { clientMock } from "./support/mock";
+import { clientMock, sellerMock } from "./support/mock";
 import connectionSource from "../database";
 import { User } from "../entities/User";
 
@@ -148,4 +149,30 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid cpf');
   });
+});
+
+describe('Entity User', () => {
+  before(() => {
+    sinon.stub(jwt, 'verify').resolves();
+    sinon.stub(repositoryUser, 'create').resolves(sellerMock);
+    sinon.stub(repositoryUser, 'save').resolves();
+  });
+
+  after(() => {
+    (jwt.verify as sinon.SinonStub).restore();
+    (repositoryUser.create as sinon.SinonStub).restore();
+    (repositoryUser.save as sinon.SinonStub).restore();
+  });
+
+  it('Método POST /seller com sucesso', async () => {
+    const response = await chai.request(app).post('/seller').set('authorization', 'token').send({
+      email: sellerMock.email,
+      password: sellerMock.password,
+      first_name: sellerMock.first_name,
+      last_name: sellerMock.last_name,
+      cpf: sellerMock.cpf
+    });
+    expect(response.status).to.be.equal(201);
+  });
+
 });

@@ -14,3 +14,13 @@ export const clientMock = {
   last_name: 'Rezende',
   cpf: '00000000000'
 }
+
+export const sellerMock = {
+  id: 2,
+  type: 'seller',
+  email: 'ana.oliva@email.com',
+  password: 'password',
+  first_name: 'Ana',
+  last_name: 'Oliva',
+  cpf: '00000000000'
+}
