@@ -23,4 +23,22 @@ export default class UserController {
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
+
+  async createSeller(req: Request, res: Response, _next: NextFunction) {
+    try {
+      const { email, password, first_name, last_name, cpf } = req.body;
+
+      await this.service.createSeller({
+        email: email,
+        password: password,
+        first_name: first_name,
+        last_name: last_name,
+        cpf: cpf
+      });
+
+      return res.status(201).end();
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal server error' })
+    }
+  }
 }

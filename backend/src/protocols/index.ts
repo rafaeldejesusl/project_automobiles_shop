@@ -20,6 +20,7 @@ export interface IUserRequest {
 
 export interface IUserService {
   createClient(client: IUserRequest): Promise<User>
+  createSeller(seller: IUserRequest): Promise<User>
 }
 
 export interface IJwtPayload {

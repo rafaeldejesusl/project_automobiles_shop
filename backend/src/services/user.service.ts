@@ -25,4 +25,20 @@ export default class UserService implements IUserService {
 
     return newClient;
   }
+
+  async createSeller(seller: IUserRequest): Promise<User> {
+    const { email, password, first_name, last_name, cpf } = seller;
+
+    const newSeller = this.repositoryUser.create({
+      email: email,
+      password: password,
+      first_name: first_name,
+      last_name: last_name,
+      cpf: cpf,
+      type: 'seller'
+    });
+    await this.repositoryUser.save(newSeller);
+
+    return newSeller;
+  }
 }
