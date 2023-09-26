@@ -4,7 +4,7 @@ import chaiHttp from "chai-http";
 import jwt from "jsonwebtoken";
 
 import { app } from "../app";
-import { adminMock, clientMock } from "./support/mock";
+import { adminMock, clientMock, sellerMock } from "./support/mock";
 import connectionSource from "../database";
 import { Admin } from "../entities/Admin";
 import { User } from "../entities/User";
@@ -95,4 +95,30 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400)
     expect(response.body.message).to.be.equal('Invalid email or password');
   });
+});
+
+describe('Entity User', () => {
+  before(() => {
+    sinon.stub(repositoryAdmin, 'findOne').resolves(null);
+    sinon.stub(repositoryUser, 'findOne').resolves(sellerMock);
+    sinon.stub(jwt, 'sign').callsFake((_payload, _secret) => {
+      return 'token';
+    });
+  });
+
+  after(() => {
+    (repositoryAdmin.findOne as sinon.SinonStub).restore();
+    (repositoryUser.findOne as sinon.SinonStub).restore();
+    (jwt.sign as sinon.SinonStub).restore();
+  });
+
+  it('Método POST /login de vendedor com sucesso', async () => {
+    const response = await chai.request(app).post('/login').send({
+      email: sellerMock.email,
+      password: sellerMock.password
+    });
+    expect(response.status).to.be.equal(200);
+    expect(response.body).to.be.equal('token');
+  });
+
 });
