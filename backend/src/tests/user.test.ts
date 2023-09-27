@@ -290,3 +290,24 @@ describe('Entity User', () => {
     expect(response.body.message).to.be.equal('Invalid cpf');
   });
 });
+
+describe('Entity User', () => {
+  before(() => {
+    sinon.stub(jwt, 'verify').resolves();
+    sinon.stub(repositoryUser, 'findOne').resolves(sellerMock);
+    sinon.stub(repositoryUser, 'remove').resolves(sellerMock);
+  });
+
+  after(() => {
+    (jwt.verify as sinon.SinonStub).restore();
+    (repositoryUser.findOne as sinon.SinonStub).restore();
+    (repositoryUser.remove as sinon.SinonStub).restore();
+  });
+
+  it('Método DELETE /seller com sucesso',async () => {
+    const response = await chai.request(app).delete('/seller').set('authorization', 'token').send({
+      email: sellerMock.email
+    });
+    expect(response.status).to.be.equal(204);
+  });
+});
