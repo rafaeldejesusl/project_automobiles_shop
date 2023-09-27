@@ -41,4 +41,18 @@ export default class UserService implements IUserService {
 
     return newSeller;
   }
+
+  async deleteSeller(email: string): Promise<User | null> {
+    const deletedSeller = await this.repositoryUser.findOne({
+      where: { email }
+    });
+
+    if (!deletedSeller || deletedSeller.type !== 'seller') {
+      return null;
+    }
+
+    await this.repositoryUser.remove(deletedSeller);
+
+    return deletedSeller;
+  }
 }

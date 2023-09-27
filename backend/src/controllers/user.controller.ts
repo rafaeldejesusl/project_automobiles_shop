@@ -41,4 +41,20 @@ export default class UserController {
       return res.status(500).json({ message: 'Internal server error' })
     }
   }
+
+  async deleteSeller(req: Request, res: Response, _next: NextFunction) {
+    try {
+      const { email } = req.body;
+
+      const deleted = await this.service.deleteSeller(email);
+
+      if (!deleted) {
+        return res.status(400).json({ message: 'Invalid Email' });
+      }
+
+      return res.status(204).end();
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 }

@@ -16,4 +16,8 @@ userRouter.post('/seller', adminTokenValidate, userValidate, (req, res, next) =>
   controller.createSeller(req, res, next);
 });
 
+userRouter.delete('/seller', adminTokenValidate, (req, res, next) => {
+  controller.deleteSeller(req, res, next);
+});
+
 export default userRouter;
