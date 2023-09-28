@@ -308,10 +308,8 @@ describe('Entity User', () => {
     (repositoryUser.remove as sinon.SinonStub).restore();
   });
 
-  it('Método DELETE /seller com sucesso',async () => {
-    const response = await chai.request(app).delete('/seller').set('authorization', 'token').send({
-      email: sellerMock.email
-    });
+  it('Método DELETE /seller/:id com sucesso', async () => {
+    const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
     expect(response.status).to.be.equal(204);
   });
 });
