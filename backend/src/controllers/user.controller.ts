@@ -44,12 +44,12 @@ export default class UserController {
 
   async deleteSeller(req: Request, res: Response, _next: NextFunction) {
     try {
-      const { email } = req.body;
+      const { id } = req.params;
 
-      const deleted = await this.service.deleteSeller(email);
+      const deleted = await this.service.deleteSeller(parseInt(id));
 
       if (!deleted) {
-        return res.status(400).json({ message: 'Invalid Email' });
+        return res.status(400).json({ message: 'Invalid id' });
       }
 
       return res.status(204).end();

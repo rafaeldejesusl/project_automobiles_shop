@@ -21,7 +21,7 @@ export interface IUserRequest {
 export interface IUserService {
   createClient(client: IUserRequest): Promise<User>
   createSeller(seller: IUserRequest): Promise<User>
-  deleteSeller(email: string): Promise<User | null>
+  deleteSeller(id: number): Promise<User | null>
 }
 
 export interface IJwtPayload {
