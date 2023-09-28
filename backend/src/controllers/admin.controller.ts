@@ -16,7 +16,7 @@ export default class AdminController {
         return res.status(400).json({ message: "Invalid email or password" });
       }
       
-      const token = generateJWT({ email, type: admin.type });
+      const token = generateJWT({ id: admin.id, email, type: admin.type });
       return res.status(200).json(token);
     } catch (error) {
       return res.status(500).json({ message: 'Internal server error' });

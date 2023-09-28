@@ -25,6 +25,7 @@ export interface IUserService {
 }
 
 export interface IJwtPayload {
+  id: number,
   email: string,
   type: string
 }
