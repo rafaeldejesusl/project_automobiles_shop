@@ -4,7 +4,7 @@ import chaiHttp from "chai-http";
 import jwt from "jsonwebtoken";
 
 import { app } from "../app";
-import { clientMock, sellerMock } from "./support/mock";
+import { adminMock, clientMock, sellerMock } from "./support/mock";
 import connectionSource from "../database";
 import { User } from "../entities/User";
 
@@ -153,7 +153,9 @@ describe('Entity User', () => {
 
 describe('Entity User', () => {
   before(() => {
-    sinon.stub(jwt, 'verify').resolves();
+    sinon.stub(jwt, 'verify').callsFake((_payload, _secret) => {
+      return adminMock;
+    });
     sinon.stub(repositoryUser, 'create').resolves(sellerMock);
     sinon.stub(repositoryUser, 'save').resolves();
   });
@@ -293,7 +295,9 @@ describe('Entity User', () => {
 
 describe('Entity User', () => {
   before(() => {
-    sinon.stub(jwt, 'verify').resolves();
+    sinon.stub(jwt, 'verify').callsFake((_payload, _secret) => {
+      return adminMock;
+    });
     sinon.stub(repositoryUser, 'findOne').resolves(sellerMock);
     sinon.stub(repositoryUser, 'remove').resolves(sellerMock);
   });
