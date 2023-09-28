@@ -312,4 +312,12 @@ describe('Entity User', () => {
     const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
     expect(response.status).to.be.equal(204);
   });
+
+  it('Método DELETE /seller/:id com id inválido', async () => {
+    (repositoryUser.findOne as sinon.SinonStub).restore();
+    sinon.stub(repositoryUser, 'findOne').resolves(null);
+
+    const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
+    expect(response.status).to.be.equal(400);
+  });
 });
