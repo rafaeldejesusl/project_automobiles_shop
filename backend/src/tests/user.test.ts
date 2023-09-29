@@ -4,7 +4,7 @@ import chaiHttp from "chai-http";
 import jwt from "jsonwebtoken";
 
 import { app } from "../app";
-import { clientMock, sellerMock } from "./support/mock";
+import { adminMock, clientMock, sellerMock } from "./support/mock";
 import connectionSource from "../database";
 import { User } from "../entities/User";
 
@@ -153,7 +153,9 @@ describe('Entity User', () => {
 
 describe('Entity User', () => {
   before(() => {
-    sinon.stub(jwt, 'verify').resolves();
+    sinon.stub(jwt, 'verify').callsFake((_payload, _secret) => {
+      return adminMock;
+    });
     sinon.stub(repositoryUser, 'create').resolves(sellerMock);
     sinon.stub(repositoryUser, 'save').resolves();
   });
@@ -288,5 +290,42 @@ describe('Entity User', () => {
     });
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid cpf');
+  });
+});
+
+describe('Entity User', () => {
+  before(() => {
+    sinon.stub(jwt, 'verify').callsFake((_payload, _secret) => {
+      return adminMock;
+    });
+    sinon.stub(repositoryUser, 'findOne').resolves(sellerMock);
+    sinon.stub(repositoryUser, 'remove').resolves(sellerMock);
+  });
+
+  after(() => {
+    (jwt.verify as sinon.SinonStub).restore();
+    (repositoryUser.findOne as sinon.SinonStub).restore();
+    (repositoryUser.remove as sinon.SinonStub).restore();
+  });
+
+  it('Método DELETE /seller/:id com sucesso', async () => {
+    const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
+    expect(response.status).to.be.equal(204);
+  });
+
+  it('Método DELETE /seller/:id com id inválido', async () => {
+    (repositoryUser.findOne as sinon.SinonStub).restore();
+    sinon.stub(repositoryUser, 'findOne').resolves(null);
+
+    const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
+    expect(response.status).to.be.equal(400);
+  });
+
+  it('Método DELETE /seller/:id tenta excluir cliente', async () => {
+    (repositoryUser.findOne as sinon.SinonStub).restore();
+    sinon.stub(repositoryUser, 'findOne').resolves(clientMock);
+
+    const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
+    expect(response.status).to.be.equal(400);
   });
 });
