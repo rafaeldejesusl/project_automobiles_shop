@@ -328,4 +328,12 @@ describe('Entity User', () => {
     const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
     expect(response.status).to.be.equal(400);
   });
+
+  it('Método DELETE /seller/:id sem ser admin', async () => {
+    (jwt.verify as sinon.SinonStub).restore();
+    sinon.stub(jwt, 'verify').resolves(clientMock);
+
+    const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
+    expect(response.status).to.be.equal(403);
+  });
 });
