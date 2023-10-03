@@ -336,4 +336,9 @@ describe('Entity User', () => {
     const response = await chai.request(app).delete('/seller/2').set('authorization', 'token');
     expect(response.status).to.be.equal(403);
   });
+
+  it('Método DELETE /seller/:id sem token', async () => {
+    const response = await chai.request(app).delete('/seller/2');
+    expect(response.status).to.be.equal(401);
+  });
 });
