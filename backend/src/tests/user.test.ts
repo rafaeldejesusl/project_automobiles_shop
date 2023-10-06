@@ -299,6 +299,11 @@ describe('Entity User', () => {
     const response = await chai.request(app).post('/seller').set('authorization', 'token');
     expect(response.status).to.be.equal(403);
   });
+
+  it('Método POST /seller sem token', async () => {
+    const response = await chai.request(app).post('/seller');
+    expect(response.status).to.be.equal(401);
+  });
 });
 
 describe('Entity User', () => {
