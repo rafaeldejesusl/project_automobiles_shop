@@ -291,6 +291,14 @@ describe('Entity User', () => {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid cpf');
   });
+
+  it('Método POST /seller sem ser admin', async () => {
+    (jwt.verify as sinon.SinonStub).restore();
+    sinon.stub(jwt, 'verify').resolves(clientMock);
+
+    const response = await chai.request(app).post('/seller').set('authorization', 'token');
+    expect(response.status).to.be.equal(403);
+  });
 });
 
 describe('Entity User', () => {
